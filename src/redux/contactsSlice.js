@@ -65,8 +65,8 @@ const contactsSlice = createSlice({
 export const contactsReducer = contactsSlice.reducer;
 
 export const { filtered } = contactsSlice.actions;
-export const contactsSelector = state => state.contacts.contacts.items;
-export const filterSelector = state => state.contacts.filter;
+export const selectContacts = state => state.contacts.contacts.items;
+export const selectFilter = state => state.contacts.filter;
 
 //  extraReducers: {
 //     [fetchContacts.pending]: handlePending,
