@@ -1,14 +1,16 @@
 import { ContactElement } from 'components/ContactElement';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { del, contactsSelector, filterSelector } from 'redux/contactsSlice';
+import { deleteContact, fetchContacts } from 'redux/contactsOperations';
+import { contactsSelector, filterSelector } from 'redux/contactsSlice';
 
 export const ContactList = () => {
   const contacts = useSelector(contactsSelector);
   const filter = useSelector(filterSelector);
   const dispatch = useDispatch();
 
-  const deleteContact = contactId => {
-    dispatch(del(contactId));
+  const delContact = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
   const filteredContacts = () => {
@@ -19,15 +21,19 @@ export const ContactList = () => {
 
   const contactList = filteredContacts();
 
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <ul>
-      {contactList.map(({ id, name, number }) => (
+      {contactList.map(({ id, name, phone }) => (
         <ContactElement
           key={id}
           id={id}
           name={name}
-          number={number}
-          deleteContact={deleteContact}
+          number={phone}
+          deleteContact={delContact}
         />
       ))}
     </ul>
