@@ -2,10 +2,15 @@ import { ContactElement } from 'components/ContactElement';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact, fetchContacts } from 'redux/contactsOperations';
-import { selectContacts, selectFilter } from 'redux/contactsSlice';
+import {
+  selectContacts,
+  selectFilter,
+  selectIsLoading,
+} from 'redux/contactsSlice';
 
 export const ContactList = () => {
   const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
@@ -25,17 +30,21 @@ export const ContactList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
+
   return (
-    <ul>
-      {contactList.map(({ id, name, phone }) => (
-        <ContactElement
-          key={id}
-          id={id}
-          name={name}
-          number={phone}
-          deleteContact={delContact}
-        />
-      ))}
-    </ul>
+    <>
+      {isLoading && <p>Loading...</p>}
+      <ul>
+        {contactList.map(({ id, name, phone }) => (
+          <ContactElement
+            key={id}
+            id={id}
+            name={name}
+            number={phone}
+            deleteContact={delContact}
+          />
+        ))}
+      </ul>
+    </>
   );
 };
